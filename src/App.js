@@ -1,6 +1,7 @@
 import React, { Component} from "react";
 import "./App.css";
 import CustomInput from './components/CustomInput'
+import Slide from './components/Slide'
 
 const inputStyle = {
   
@@ -17,7 +18,18 @@ const classes = {
     minWidth:'128px',
   }
 }
+
+
+
 class App extends Component{
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      selectedIndex:0
+    };
+  }
+
   render(){
     return(
       <div className="App">
@@ -44,6 +56,18 @@ class App extends Component{
           <option value={'slideHoriz'} > Slide Horizontal </option>
         </CustomInput>
         </div>
+        <Slide images = {[
+          {src:"https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/aurora.jpg", text:'Aurora'},
+          {src:"https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/canyon.jpg", text:'Canyon'},
+          {src:"https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/city.jpg", text:'City'},
+          {src:"https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/desert.jpg", text:'Desert'},
+          {src:"https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/mountains.jpg", text:'Mountains'},
+          {src:"https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/redsky.jpg", text:'Redsky'},
+          {src:"https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/sandy-shores.jpg", text:'Sandy Shores'},
+          {src:"https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/tree-of-life.jpg", text:'Tree of Life'}
+          
+          ]} />
+        
       </div>
     );
   }
