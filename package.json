@@ -1,0 +1,14 @@
+{
+  "name": "43-graus",
+  "version": "1.0.0",
+  "description": "Teste para a 43 graus",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Filipe Groh",
+  "license": "ISC",
+  "dependencies": {
+    "npm": "^6.4.1"
+  }
+}
