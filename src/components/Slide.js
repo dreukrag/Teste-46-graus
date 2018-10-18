@@ -54,17 +54,18 @@ const imgShow = {
 }
 
 const imgNoShow = {
-    transform:'translateX(200%)',
+    transform:'translateX(100%)',
+    opacity:0,
 }
 const imgDefault = {
-    transition:'transform ease-out 0.35s',
-    transform:'translateX(200%)',
+    transition:'transform ease-out 0.35s, opacity ease-out 0.35s',
+    transform:'translateX(100%)',
     position:'absolute',
     zIndex:0,
 }
 
-const ImgLeft = {transform:'translateX(-200%)',}
-const ImgRight = {transform:'translateX(200%)',}
+const ImgLeft = {transform:'translateX(-100%)',}
+const ImgRight = {transform:'translateX(100%)',}
 export default class Slide extends React.Component {
     constructor(props) {
         super(props);
@@ -77,9 +78,15 @@ export default class Slide extends React.Component {
     RenderImages = () =>{
         var ImageList = this.props.images.map( (x, index) => {
             console.log(index, index == this.state.selectedIndex );
+            var firstIndex = 0;
+            var lastIndex = this.props.images.length -1;
             var slideFrom;
-            if (index != this.state.selectedIndex){
+            if (index != this.state.selectedIndex && (index != firstIndex || index != lastIndex) ){
                 slideFrom = index < this.state.selectedIndex ? ImgLeft:ImgRight
+            }else if (this.state.selectedIndex == firstIndex && index == lastIndex){
+                slideFrom = ImgRight;
+            }else if (this.state.selectedIndex == lastIndex && index == firstIndex){
+                slideFrom = ImgLeft;
             }
             return(<div key={index} style={{
                 ...imgDefault, ...(index == this.state.selectedIndex ? imgShow : imgNoShow),
