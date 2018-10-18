@@ -2,10 +2,11 @@ import React from 'react'
 import {NativeSelect, Input, InputLabel, FormControl } from '@material-ui/core'
 import uniqid from 'uniqid'
 
+//TO-DO Adicionar o Redux
 export default class CustomInput extends React.Component {
     constructor(props) {
         super(props);
-    
+        //this.store = this.props.store
         this.state = {
           selected:''
         };
@@ -28,8 +29,9 @@ export default class CustomInput extends React.Component {
     )}
 
     handleChange = (e)=>{
+        this.props.handleFunc(e.target.value);
         this.setState({
-            selected:e.targetvalue
+            selected:e.target.value
         })
     }
 }

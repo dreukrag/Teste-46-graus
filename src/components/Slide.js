@@ -5,7 +5,6 @@ import {Card } from '@material-ui/core'
 const classes = {
     SlideCard:{
         marginTop:'32px',
-        maxWidth:'900px',
     },
     SlideMain:{
         display:'flex',
@@ -53,19 +52,35 @@ const imgShow = {
     display:'',
 }
 
-const imgNoShow = {
+const imgNoShowSlide = {
     transform:'translateX(100%)',
     opacity:0,
 }
-const imgDefault = {
+const imgDefaultSlide = {
     transition:'transform ease-out 0.35s, opacity ease-out 0.35s',
     transform:'translateX(100%)',
     position:'absolute',
     zIndex:0,
 }
 
-const ImgLeft = {transform:'translateX(-100%)',}
-const ImgRight = {transform:'translateX(100%)',}
+const imgNoShowScale = {
+    transform:'scale(1.1)',
+    opacity:0,
+}
+const imgDefaultScale = {
+    transition:'all ease-out 0.35s, opacity ease-out 0.35s',
+    transform:'scale(1)',
+    position:'absolute',
+    zIndex:0,
+}
+
+const ImgLeftSlide = {transform:'translateX(-100%)',}
+const ImgRightSlide = {transform:'translateX(100%)',}
+
+const ImgLeftScale = {transform:'scale(1.1)',}
+const ImgRightScale = {transform:'scale(1.1)',}
+
+//TO-DO: Puxar dados via redux
 export default class Slide extends React.Component {
     constructor(props) {
         super(props);
@@ -80,18 +95,50 @@ export default class Slide extends React.Component {
             console.log(index, index == this.state.selectedIndex );
             var firstIndex = 0;
             var lastIndex = this.props.images.length -1;
-            var slideFrom;
-            if (index != this.state.selectedIndex && (index != firstIndex || index != lastIndex) ){
-                slideFrom = index < this.state.selectedIndex ? ImgLeft:ImgRight
-            }else if (this.state.selectedIndex == firstIndex && index == lastIndex){
-                slideFrom = ImgRight;
-            }else if (this.state.selectedIndex == lastIndex && index == firstIndex){
-                slideFrom = ImgLeft;
+            var stylesToApply;
+            switch (this.props.selectedAnimation){
+                case 'slideHoriz':
+                    var slideFrom;
+                    if (index != this.state.selectedIndex && (index != firstIndex || index != lastIndex) ){
+                        slideFrom = index < this.state.selectedIndex ? ImgLeftSlide:ImgRightSlide
+                    }else if (this.state.selectedIndex == firstIndex && index == lastIndex){
+                        slideFrom = ImgRightSlide;
+                    }else if (this.state.selectedIndex == lastIndex && index == firstIndex){
+                        slideFrom = ImgLeftSlide;
+                    }
+                    stylesToApply = {...imgDefaultSlide, ...(index == this.state.selectedIndex ? imgShow : imgNoShowSlide),
+                        ...slideFrom}
+                    break;
+                
+
+                case 'scale':
+                    var scaleFrom;
+                    if (index != this.state.selectedIndex && (index != firstIndex || index != lastIndex) ){
+                        scaleFrom = index < this.state.selectedIndex ? ImgLeftScale:ImgRightScale
+                    }else if (this.state.selectedIndex == firstIndex && index == lastIndex){
+                        scaleFrom = ImgRightScale;
+                    }else if (this.state.selectedIndex == lastIndex && index == firstIndex){
+                        scaleFrom = ImgLeftScale;
+                    }
+                    stylesToApply = {...imgDefaultScale, ...(index == this.state.selectedIndex ? imgShow : imgNoShowScale),
+                        ...scaleFrom}
+                    break;
+
+                default:
+                    var slideFrom;
+                    if (index != this.state.selectedIndex && (index != firstIndex || index != lastIndex) ){
+                        slideFrom = index < this.state.selectedIndex ? ImgLeftSlide:ImgRightSlide
+                    }else if (this.state.selectedIndex == firstIndex && index == lastIndex){
+                        slideFrom = ImgRightSlide;
+                    }else if (this.state.selectedIndex == lastIndex && index == firstIndex){
+                        slideFrom = ImgLeftSlide;
+                    }
+                    stylesToApply = {...imgDefaultSlide, ...(index == this.state.selectedIndex ? imgShow : imgNoShowSlide),
+                        ...slideFrom}
+                    break;
             }
-            return(<div key={index} style={{
-                ...imgDefault, ...(index == this.state.selectedIndex ? imgShow : imgNoShow),
-                 ...slideFrom
-                }}>
+            
+            return(<div key={index} style={stylesToApply}>
                 <label style={classes.SlideLabel}>{x.text}</label>
                 <img style={classes.SlideImage} src={x.src}></img>
             </div>)}
@@ -100,7 +147,7 @@ export default class Slide extends React.Component {
 
     }
     render = () => (
-        <Card style={classes.SlideCard}>
+        <Card style={{...classes.SlideCard, ...{maxWidth:this.props.slideWidth}}}>
             <div style = {classes.SlideMain}>
                 <div style = {classes.SlideWidgetLeft} onClick={this.moveLeft}></div>
                 <div style = {classes.SlideContent}>

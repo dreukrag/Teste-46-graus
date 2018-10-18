@@ -2,10 +2,7 @@ import React, { Component} from "react";
 import "./App.css";
 import CustomInput from './components/CustomInput'
 import Slide from './components/Slide'
-
-const inputStyle = {
-  
-}
+import {setWidth, setProportion, setAnimation, setImageIndex} from './actions'
 
 const inputContainer = {
   display:'flex',
@@ -19,28 +16,48 @@ const classes = {
   }
 }
 
-
-
 class App extends Component{
   constructor(props) {
     super(props);
-  
-    this.state = {
-      selectedIndex:0
-    };
+    this.state ={
+      selectedWidth: '',
+      selectedProportion: '',
+      selectedAnimation: '',
+      selectedIndex:0,
+    }
   }
+
+  //TO-DO Converter handlers para redux.
+  handleWidth = (wdt) =>{
+    console.log('width dispatching: ' + wdt)
+    this.setState({selectedWidth:wdt})
+  };
+  handleProportion = (pptn) =>{
+    console.log('proportion dispatching: ' + pptn)
+    this.setState({selectedProportion:pptn})
+  };
+  handleAnimation = (anmt) =>{
+    console.log('animation dispatching: ' + anmt)
+    this.setState({selectedAnimation:anmt})
+  };
+  handleImageIndex = (ii) =>{
+    console.log('image index dispatching: ' + ii)
+    this.setState({selectedIndex:ii})
+  };
 
   render(){
     return(
       <div className="App">
         <div style={inputContainer}>
-        <CustomInput classes = {classes} inputLabel="Width">
+        <CustomInput classes = {classes} inputLabel="Width" 
+          handleFunc={this.handleWidth} >
           <option />
           <option value={'700px'} > 700px </option>
           <option value={'900px'} > 900px </option>
         </CustomInput>
         
-        <CustomInput classes = {classes} inputLabel="Proporção">
+        <CustomInput classes = {classes} inputLabel="Proporção" 
+          handleFunc={this.handleProportion} >
           <option />
           <option value={'1:1'} > 1:1 </option>
           <option value={'16:9'} > 16:9 </option>
@@ -50,13 +67,17 @@ class App extends Component{
         
         </CustomInput>
 
-        <CustomInput classes = {classes} inputLabel="Animação">
-          <option />          
-          <option value={'scale'} > Scale </option>
+        <CustomInput classes = {classes} inputLabel="Animação" 
+          handleFunc={this.handleAnimation} >
           <option value={'slideHoriz'} > Slide Horizontal </option>
+          <option value={'scale'} > Scale </option>
+          <option />                    
         </CustomInput>
         </div>
-        <Slide images = {[
+        <Slide handleFunc={this.handleImageIndex} selectedAnimation ={this.state.selectedAnimation}
+          slideWidth={this.state.selectedWidth}
+          /*TO-DO: Proporção?*/
+          images = {[
           {src:"https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/aurora.jpg", text:'Aurora'},
           {src:"https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/canyon.jpg", text:'Canyon'},
           {src:"https://s3.us-east-2.amazonaws.com/dzuz14/thumbnails/city.jpg", text:'City'},
